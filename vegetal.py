@@ -9,7 +9,7 @@ class Vegetal(object):
     def __init__(self):
         self.position = Vector2(random.randint(0, core.WINDOW_SIZE[0]), random.randint(0, core.WINDOW_SIZE[1]))
         self.mass = 5
-        self.color = (255,255,255)
+        self.color = (124,252,0)
         self.statut = "VEGETAL"
         self.vivant = True
 

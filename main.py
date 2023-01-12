@@ -259,6 +259,8 @@ def draw_graph():
             elif key == "DEAD":
                 plt.plot(history_time, history_data[key], 'k', label=key)
             elif key == "HERBIVORE":
+                plt.plot(history_time, history_data[key], 'grey', label=key)
+            elif key == "DECOMPOSITEUR":
                 plt.plot(history_time, history_data[key], 'blue', label=key)
 
         plt.xlabel('Temps (s)')

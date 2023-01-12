@@ -100,8 +100,6 @@ class Body(object):
             core.Draw.circle((255, 165, 0), self.position, self.mass)
         elif self.statut == "SUPER_PREDATEUR":
             core.Draw.circle((255, 0, 0), self.position, self.mass)
-        elif self.statut == "VEGETAL":
-            core.Draw.circle((0, 128, 0), self.position, self.mass)
         elif self.statut == "DECOMPOSITEUR":
             core.Draw.circle((0, 128, 255), self.position, self.mass)
         elif self.statut == "DEAD":
@@ -109,8 +107,8 @@ class Body(object):
             p1 = self.position + Vector2(0, 0).rotate(a)
             p2 = self.position + Vector2(0, 45).rotate(a) - Vector2(35, 0)
             p3 = self.position + Vector2(45, 0).rotate(a) - Vector2(0, -35)
-            core.Draw.line((255, 255, 255), p1 + Vector2(-10,0), p2, 3)
-            core.Draw.line((255, 255, 255), p1 + Vector2(0,10), p3, 3)
+            #core.Draw.line((255, 255, 255), p1 + Vector2(-10,0), p2, 3)
+            #core.Draw.line((255, 255, 255), p1 + Vector2(0,10), p3, 3)
 
     def edge(self):
         if self.position.x <= self.mass:
