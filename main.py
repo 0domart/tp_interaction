@@ -157,7 +157,7 @@ def loadPath(param):
                                            MaxEndormi_super_predateur_max,
                                            MaxEsperance_super_predateur_min,
                                            MaxEsperance_super_predateur_max))
-        for i in range(0, 30):
+        for i in range(0,  data['Vegetal']['nb']):
             core.memory('vegetals').append(Vegetal())
 
 def setup():
@@ -182,8 +182,8 @@ def computePerception():
     for a in core.memory('agents'):
         a.body.fustrum.perceptionList = []
         for b in core.memory('vegetals'):
-                if a.body.fustrum.vision(b):
-                    a.body.fustrum.perceptionList.append(b)
+            if a.body.fustrum.vision(b):
+                a.body.fustrum.perceptionList.append(b)
         for b in core.memory('agents'):
             if a.uuid != b.uuid:
                 if a.body.fustrum.vision(b.body):
@@ -224,27 +224,83 @@ def predateurManuelle():
 
 def show_stats_console():
     status_counts = {}
+
+    genetique_vmax = {"title": "Meilleure VMAX", "value": 0, "agent_id": 0, "agent_statut": ""}
+    genetique_jauge_faim_max = {"title": "Meilleure Jauge de Faim", "value": 0, "agent_id": 0, "agent_statut": ""}
+    genetique_jauge_fatigue_max = {"title": "Meilleure Jauge de Fatigue", "value": 0, "agent_id": 0, "agent_statut": ""}
+    genetique_jauge_reproduction_max = {"title": "Meilleure Jauge de Reproduction", "value": 0, "agent_id": 0, "agent_statut": ""}
+    genetique_jauge_esperance_vie_max = {"title": "Meilleure Esperance de Vie", "value": 0, "agent_id": 0, "agent_statut": ""}
+
     for obj in core.memory("agents"):
         status = obj.body.statut
+        if genetique_vmax["value"] < obj.body.vMax:
+            genetique_vmax["value"] = obj.body.vMax
+            genetique_vmax["agent_id"] = obj.uuid
+            genetique_vmax["agent_statut"] = status
+
+        if genetique_jauge_faim_max["value"] < obj.body.jauge_faim_max:
+            genetique_jauge_faim_max["value"] = obj.body.jauge_faim_max
+            genetique_jauge_faim_max["agent_id"] = obj.uuid
+            genetique_jauge_faim_max["agent_statut"] = status
+
+        if genetique_jauge_fatigue_max["value"] < obj.body.jauge_fatigue_max:
+            genetique_jauge_fatigue_max["value"] = obj.body.jauge_fatigue_max
+            genetique_jauge_fatigue_max["agent_id"] = obj.uuid
+            genetique_jauge_fatigue_max["agent_statut"] = status
+
+        if genetique_jauge_reproduction_max["value"] < obj.body.jauge_reproduction_max:
+            genetique_jauge_reproduction_max["value"] = obj.body.jauge_reproduction_max
+            genetique_jauge_reproduction_max["agent_id"] = obj.uuid
+            genetique_jauge_reproduction_max["agent_statut"] = status
+
+        if genetique_jauge_esperance_vie_max["value"] < obj.body.esperance_vie:
+            genetique_jauge_esperance_vie_max["value"] = obj.body.esperance_vie
+            genetique_jauge_esperance_vie_max["agent_id"] = obj.uuid
+            genetique_jauge_esperance_vie_max["agent_statut"] = status
+
         if status not in status_counts:
             status_counts[status] = 0
         status_counts[status] += 1
 
+    status_counts["VEGETAL"] = 0
+    status_counts["VEGETAL_DEAD"] = 0
+    for obj in core.memory("vegetals"):
+        if obj.vivant:
+            status_counts["VEGETAL"] += 1
+        else :
+            status_counts["VEGETAL_DEAD"] += 1
+
     print(status_counts)
+    print(genetique_vmax)
+    print(genetique_jauge_faim_max)
+    print(genetique_jauge_fatigue_max)
+    print(genetique_jauge_reproduction_max)
+    print(genetique_jauge_esperance_vie_max)
+    print("\n")
+    print("\n")
+
 
 # This function will be called every 1 sec
 
 history_time = []
-history_data = {"HERBIVORE": [], "CARNIVORE": [], "SUPER_PREDATEUR": [], "VEGETAL": [], "DEAD": [], 'DECOMPOSITEUR':[]}
+history_data = {"HERBIVORE": [], "CARNIVORE": [], "SUPER_PREDATEUR": [], "VEGETAL": [], "VEGETAL_DEAD": [], "DEAD": [], 'DECOMPOSITEUR': []}
+
 
 def draw_graph():
     while True:
         global history_data
         global history_time
 
-        data = {'HERBIVORE': 0, 'CARNIVORE': 0, 'SUPER_PREDATEUR': 0, 'VEGETAL': 0, 'DEAD': 0, 'DECOMPOSITEUR':0}
+        data = {'HERBIVORE': 0, 'CARNIVORE': 0, 'SUPER_PREDATEUR': 0, 'VEGETAL': 0, 'VEGETAL_DEAD': 0, 'DEAD': 0, 'DECOMPOSITEUR': 0}
         for agent in core.memory("agents"):
             data[agent.body.statut] += 1
+
+        for obj in core.memory("vegetals"):
+            if obj.vivant:
+                data["VEGETAL"] += 1
+            else:
+                data["VEGETAL_DEAD"] += 1
+
         plt.cla()  # Clear axis
         current_time = pygame.time.get_ticks() / 1000
         history_time.append(current_time)
@@ -252,6 +308,8 @@ def draw_graph():
             history_data[key].append(data[key])
             if key == "VEGETAL":
                 plt.plot(history_time, history_data[key], 'g', label=key)
+            elif key == "VEGETAL_DEAD":
+                plt.plot(history_time, history_data[key], 'y', label=key)
             elif key == "SUPER_PREDATEUR":
                 plt.plot(history_time, history_data[key], 'r', label=key)
             elif key == "CARNIVORE":
@@ -295,5 +353,6 @@ def run(last_call=None):
 
     for agent in core.memory("agents"):
         applyDecision(agent)
+
 
 core.main(setup, run)

@@ -99,7 +99,7 @@ class Agent(object):
                 p.vivant = False
                 p.statut = "DEAD"
                 if p.statut == "CARNIVORE":
-                    self.body.timer_faim = pygame.time.get_ticks() # On regarde toute sa jauge secondes en mangeant
+                    self.body.timer_faim = pygame.time.get_ticks() # On regagne toute sa jauge secondes en mangeant
                 if p.statut == "HERBIVORE":
                     self.body.timer_faim -= 10000 # On gagne 10 secondes en mangeant un herbivore
                 if p.statut == "DECOMPOSITEUR":

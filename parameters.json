@@ -67,37 +67,7 @@
          }
       },
     "Vegetal": {
-      "nb": 50,
-      "parametres": {
-            "vitesseMax": [
-               5,
-               5
-            ],
-            "accelerationMax": [
-               1,
-               1
-            ],
-            "MaxFaim": [
-               10,
-               20
-            ],
-            "MaxFatigue": [
-               5,
-               30
-            ],
-            "MaxReproduction": [
-               20,
-               20
-            ],
-            "MaxEndormi": [
-               2,
-               5
-            ],
-            "MaxEsperance": [
-               100,
-               200
-            ]
-         }
+      "nb": 10
    },
     "Carnivore": {
       "nb": 10,
